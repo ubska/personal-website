@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oleksandra — Personal Site</title>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --accent: #7c6af7;
+      --accent-light: #a599ff;
+      --green: #4ade80;
+      --sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(15,15,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--accent-light);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 2.5rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent-light), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 2.5rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent-light); }
+
+    /* ── Section base ── */
+    section {
+      padding: 5rem 2.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── About ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-chip {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .skill-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent-light);
+    }
+
+    /* ── Work / Projects ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+      text-decoration: none;
+      display: block;
+      color: var(--text);
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .project-card-icon {
+      margin-bottom: 1rem;
+      color: var(--accent-light);
+    }
+
+    .project-card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.5;
+    }
+
+    .project-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(124, 106, 247, 0.1);
+      color: var(--accent-light);
+      border: 1px solid rgba(124, 106, 247, 0.2);
+    }
+
+    /* ── Experience ── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 2rem;
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .timeline-item:last-child { border-bottom: 1px solid var(--border); }
+
+    .timeline-date {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      padding-top: 0.15rem;
+    }
+
+    .timeline-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .timeline-content .company {
+      font-size: 0.875rem;
+      color: var(--accent-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .timeline-content p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── Status indicator ── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--green);
+      background: rgba(74, 222, 128, 0.08);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ── Contact ── */
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .contact-link-icon {
+      width: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-light);
+      flex-shrink: 0;
+    }
+
+    .contact-link-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 1.75;
+    }
+
+    .contact-link-label {
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .contact-link-value {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+      .hero, section { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .timeline-item { grid-template-columns: 1fr; gap: 0.25rem; }
+      .timeline-date { padding-top: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a class="nav-logo" href="#">oleksandra.dev</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Open to new opportunities
+    </div>
+    <p class="hero-tag">// hello, world</p>
+    <h1>I build things<br>for the <span>web</span>.</h1>
+    <p>
+      Software engineer with a passion for clean interfaces, performant systems,
+      and developer tooling. I turn complex problems into elegant, maintainable solutions.
+    </p>
+    <div class="hero-actions">
+      <a href="#work" class="btn btn-primary">View my work</a>
+      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section id="about">
+    <p class="section-label">01 — About</p>
+    <h2 class="section-title">A bit about me</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm a software engineer based in Europe, focused on building high-quality
+          products that live at the intersection of design and engineering.
+        </p>
+        <p>
+          When I'm not coding, I'm reading about distributed systems, contributing
+          to open source, or hunting for the perfect espresso.
+        </p>
+        <p>
+          I care deeply about developer experience, accessibility, and making
+          software that feels genuinely good to use.
+        </p>
+      </div>
+      <div>
+        <p class="section-label" style="margin-bottom:1rem;">Technologies</p>
+        <div class="skills-list">
+          <span class="skill-chip">TypeScript</span>
+          <span class="skill-chip">React</span>
+          <span class="skill-chip">Node.js</span>
+          <span class="skill-chip">Python</span>
+          <span class="skill-chip">PostgreSQL</span>
+          <span class="skill-chip">Redis</span>
+          <span class="skill-chip">Docker</span>
+          <span class="skill-chip">Kubernetes</span>
+          <span class="skill-chip">AWS</span>
+          <span class="skill-chip">GraphQL</span>
+          <span class="skill-chip">Rust</span>
+          <span class="skill-chip">Next.js</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section id="work">
+    <p class="section-label">02 — Work</p>
+    <h2 class="section-title">Selected projects</h2>
+    <div class="projects-grid">
+      <a href="#" class="project-card">
+        <div class="project-card-icon"><i data-lucide="activity"></i></div>
+        <h3>Pulse</h3>
+        <p>Real-time analytics dashboard processing 10M+ events/day with sub-second latency.</p>
+        <div class="project-tags">
+          <span class="tag">TypeScript</span>
+          <span class="tag">Kafka</span>
+          <span class="tag">ClickHouse</span>
+        </div>
+      </a>
+      <a href="#" class="project-card">
+        <div class="project-card-icon"><i data-lucide="shield"></i></div>
+        <h3>Vault CLI</h3>
+        <p>Developer-first secret management tool with zero-knowledge encryption and team sharing.</p>
+        <div class="project-tags">
+          <span class="tag">Rust</span>
+          <span class="tag">AES-256</span>
+          <span class="tag">CLI</span>
+        </div>
+      </a>
+      <a href="#" class="project-card">
+        <div class="project-card-icon"><i data-lucide="layout-grid"></i></div>
+        <h3>Mosaic UI</h3>
+        <p>Accessible component library with 60+ primitives, zero runtime dependencies.</p>
+        <div class="project-tags">
+          <span class="tag">React</span>
+          <span class="tag">Radix</span>
+          <span class="tag">CSS</span>
+        </div>
+      </a>
+      <a href="#" class="project-card">
+        <div class="project-card-icon"><i data-lucide="bot"></i></div>
+        <h3>Synth</h3>
+        <p>AI-powered code review bot that integrates with GitHub PRs and learns your team's style.</p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Claude API</span>
+          <span class="tag">GitHub</span>
+        </div>
+      </a>
+      <a href="#" class="project-card">
+        <div class="project-card-icon"><i data-lucide="package"></i></div>
+        <h3>Depot</h3>
+        <p>Self-hosted package registry with S3-compatible storage and fine-grained access control.</p>
+        <div class="project-tags">
+          <span class="tag">Go</span>
+          <span class="tag">S3</span>
+          <span class="tag">Docker</span>
+        </div>
+      </a>
+      <a href="#" class="project-card">
+        <div class="project-card-icon"><i data-lucide="map"></i></div>
+        <h3>Maplet</h3>
+        <p>Lightweight mapping library for React with WebGL rendering and custom tile support.</p>
+        <div class="project-tags">
+          <span class="tag">WebGL</span>
+          <span class="tag">React</span>
+          <span class="tag">OSM</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience">
+    <p class="section-label">03 — Experience</p>
+    <h2 class="section-title">Where I've worked</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="timeline-date">2023 — Present</span>
+        <div class="timeline-content">
+          <h3>Senior Software Engineer</h3>
+          <p class="company">Acme Corp</p>
+          <p>Led a team of 5 engineers building the core data platform. Reduced pipeline latency by 40% and migrated the monolith to microservices.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date">2021 — 2023</span>
+        <div class="timeline-content">
+          <h3>Software Engineer</h3>
+          <p class="company">Startup XYZ</p>
+          <p>Full-stack development on a B2B SaaS product. Shipped the real-time collaboration feature used by 50k+ daily active users.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date">2019 — 2021</span>
+        <div class="timeline-content">
+          <h3>Junior Developer</h3>
+          <p class="company">Agency ABC</p>
+          <p>Built web applications for clients across fintech and e-commerce. Introduced automated testing practices that cut QA time by 30%.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <p class="section-label">04 — Contact</p>
+    <h2 class="section-title">Let's talk</h2>
+    <div class="contact-links">
+      <a href="mailto:oleksandraubska@gmail.com" class="contact-link">
+        <span class="contact-link-icon"><i data-lucide="mail"></i></span>
+        <div>
+          <div class="contact-link-label">email</div>
+          <div class="contact-link-value">oleksandraubska@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://github.com/" target="_blank" rel="noopener" class="contact-link">
+        <span class="contact-link-icon"><i data-lucide="github"></i></span>
+        <div>
+          <div class="contact-link-label">github</div>
+          <div class="contact-link-value">github.com/oleksandra</div>
+        </div>
+      </a>
+      <a href="https://it.linkedin.com/in/ubska" target="_blank" rel="noopener" class="contact-link">
+        <span class="contact-link-icon"><i data-lucide="linkedin"></i></span>
+        <div>
+          <div class="contact-link-label">linkedin</div>
+          <div class="contact-link-value">linkedin.com/in/ubska</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>designed &amp; built by oleksandra — 2026</p>
+  </footer>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
